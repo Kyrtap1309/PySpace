@@ -1,0 +1,10 @@
+#Shell
+ipython
+
+#Jupyter
+jupyterlab
+
+#math
+numpy
+matplotlib
+
