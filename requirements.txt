@@ -1,6 +1,0 @@
-#Math
-numpy
-matplotlib
-
-#Shell
-ipython
