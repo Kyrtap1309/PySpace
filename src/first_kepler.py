@@ -1,6 +1,7 @@
 import datetime 
 import spiceypy
 import numpy as np
+import matplotlib.pyplot as plt
 
 from kernel_manager import kernels_load
 
@@ -45,4 +46,35 @@ for time in time_array:
 #convert to numpy array
 solar_system_barycentre_pos = np.array(solar_system_barycentre_pos)
 
+#import sun radius
+_, sun_radius_arr = spiceypy.bodvcd(bodyid=10, item='RADII', maxn=3)
+sun_radius = sun_radius_arr[0]
+
+#Scalled solar system barycentre position (in Sun radii)
+solar_system_barycentre_pos_scalled = solar_system_barycentre_pos/sun_radius
+
+#Plotting trajectory of solar system barycentre (only needed x and y coordinates)
+solar_system_barycentre_pos_scalled_plane = solar_system_barycentre_pos_scalled[:, 0:2]
+
+plt.style.use('dark_background')
+
+fig, ax = plt.subplots(figsize=(15, 10))
+
+#Begin with plotting the sun
+sun_plot = plt.Circle((0.0, 0.0), 1.0, color='yellow')
+ax.add_artist(sun_plot)
+ax.plot(solar_system_barycentre_pos_scalled_plane[:, 0], solar_system_barycentre_pos_scalled_plane[:, 1],
+        color='green')
+ax.grid(True, linewidth=0.2, linestyle='dashed', alpha=0.5)
+ax.set_aspect('equal')
+ax.set_xlim(-5, 5)
+ax.set_ylim(-5, 5)
+
+
+ax.set_xlabel('x in sun radius')
+ax.set_ylabel('y in sun radius')
+plt.title('Trajectory of solar system barycentrum')
+
+
+plt.show()
 
