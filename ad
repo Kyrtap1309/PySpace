@@ -1,0 +1,101 @@
+[33mcommit 6bbb355309aacd1b55ee9a09223a6291d7b31c50[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m)[m
+Author: Patryk Niczke <kyrtap1301@gmail.com>
+Date:   Sun Mar 17 14:47:54 2024 +0100
+
+    Cloned repo from github
+
+[33mcommit 896ba6ec7af3a4342513bcdd98d1cb4f06a701bd[m
+Author: Patryk Niczke <kyrtap1301@gmail.com>
+Date:   Sun Mar 17 14:41:45 2024 +0100
+
+    Adding txt with required packages
+
+[33mcommit 0805dcede0515d2e5028d88930e2ec2ede28d5e3[m[33m ([m[1;31morigin/main[m[33m)[m
+Author: Patryk Niczke <kyrtap1301@gmail.com>
+Date:   Fri Mar 22 14:18:02 2024 +0100
+
+    Made earth.py object oriented
+
+[33mcommit 55281beaa81ed2445161d2b89f00eccbbeaed286[m
+Author: Patryk Niczke <kyrtap1301@gmail.com>
+Date:   Fri Mar 22 13:31:40 2024 +0100
+
+    Added new the earth's parameters and make file to manage kernels
+
+[33mcommit 210cabfa6550d29cb5512fbefc0357af13444f8e[m
+Author: Patryk Niczke <kyrtap1301@gmail.com>
+Date:   Thu Mar 21 18:31:59 2024 +0100
+
+    I've added code to calculate earth velocity around the Sun
+
+[33mcommit e9d769c26593e080141e3667b98d4fb12adb3703[m
+Author: Patryk Niczke <kyrtap1301@gmail.com>
+Date:   Thu Mar 21 18:01:05 2024 +0100
+
+    I've added a calculations of vector state of Earth and its velocity
+
+[33mcommit 66dfbd8aa037c434c375529e29cc95111e1f04bc[m
+Author: Patryk Niczke <kyrtap1301@gmail.com>
+Date:   Thu Mar 21 17:59:20 2024 +0100
+
+    I've added a kernels necessary to software working properly
+
+[33mcommit fa58eecc3c6b766cf0c172a48bffceae2e750c3b[m
+Author: Patryk Niczke <kyrtap1301@gmail.com>
+Date:   Wed Mar 20 16:32:09 2024 +0100
+
+    I've added a leapsecond kernel file from Cassini space mission
+
+[33mcommit 0b7ec987e66b03507715840e7a4eae239b7fe953[m
+Author: Patryk Niczke <kyrtap1301@gmail.com>
+Date:   Wed Mar 20 16:19:47 2024 +0100
+
+    Improved .gitignore once again
+
+[33mcommit ac35b4af4cad8cd8de8a04f5e6a60574f5ce407a[m
+Author: Patryk Niczke <kyrtap1301@gmail.com>
+Date:   Wed Mar 20 16:13:41 2024 +0100
+
+    Removed gitignore
+
+[33mcommit 1fbf396812f0d503c206d1b765abfafd63c22ee1[m
+Author: Patryk Niczke <kyrtap1301@gmail.com>
+Date:   Wed Mar 20 16:12:03 2024 +0100
+
+    Improved gitignore
+
+[33mcommit b0faca83e87645be5f4569775f14ee7c6ee1567f[m
+Author: Patryk Niczke <kyrtap1301@gmail.com>
+Date:   Wed Mar 20 16:10:57 2024 +0100
+
+    Added gitignore
+
+[33mcommit f6871d2d32100c3b3927a6dbc84768d6dd2334d4[m
+Author: Patryk Niczke <kyrtap1301@gmail.com>
+Date:   Wed Mar 20 15:55:47 2024 +0100
+
+    Reset of the project
+
+[33mcommit 194a7d36ad569dcc6e8adaee19640279b48cfbae[m
+Author: Patryk Niczke <kyrtap1301@gmail.com>
+Date:   Tue Mar 19 13:59:10 2024 +0100
+
+    Added Dockerfile
+
+[33mcommit 8199268dceccd3215faf7883a80e4c31d1fc2433[m
+Author: Patryk Niczke <kyrtap1301@gmail.com>
+Date:   Tue Mar 19 12:32:43 2024 +0100
+
+    Docker instead of python venv
+
+[33mcommit 88a49c5332f24db26fa483a5178513ebdb29aaab[m
+Author: Kyrtap1309 <kyrtap1301@gmail.com>
+Date:   Mon Mar 18 18:58:00 2024 +0100
+
+    Create README.md
+
+[33mcommit 2823875960b16236a2c2580f4092df721ef1df84[m
+Author: Patryk Niczke <kyrtap1301@gmail.com>
+Date:   Mon Mar 18 18:33:29 2024 +0100
+
+    Added requirements.txt file and made python virtual env
