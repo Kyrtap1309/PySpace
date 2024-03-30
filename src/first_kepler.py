@@ -1,3 +1,6 @@
+# TO DO make it object oriented
+# TO DO make plot animated
+
 import datetime 
 import spiceypy
 import numpy as np
@@ -63,9 +66,10 @@ fig, ax = plt.subplots(figsize=(15, 10))
 #Begin with plotting the sun
 sun_plot = plt.Circle((0.0, 0.0), 1.0, color='yellow')
 ax.add_artist(sun_plot)
-ax.plot(solar_system_barycentre_pos_scalled_plane[:, 0], solar_system_barycentre_pos_scalled_plane[:, 1],
+ax.plot(solar_system_barycentre_pos_scalled_plane[:, 0], 
+        solar_system_barycentre_pos_scalled_plane[:, 1],
         color='green')
-ax.grid(True, linewidth=0.2, linestyle='dashed', alpha=0.5)
+ax.grid(True, linewidth=0.5, linestyle='dashed', alpha=0.7)
 ax.set_aspect('equal')
 ax.set_xlim(-5, 5)
 ax.set_ylim(-5, 5)
