@@ -40,3 +40,9 @@ solar_system_barycentre_pos = []
 for time in time_array:
     _position, _ =spiceypy.spkgps(targ=0, et=time, ref ='ECLIPJ2000',
                                   obs = 10)
+    solar_system_barycentre_pos.append(_position)
+
+#convert to numpy array
+solar_system_barycentre_pos = np.array(solar_system_barycentre_pos)
+
+
