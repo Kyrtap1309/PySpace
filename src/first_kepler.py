@@ -25,11 +25,11 @@ class FirstKepler:
         kernels_load(self.kernels_path)
 
         #Initialization of UTC time
-        self.init_utc_time = datetime.datetime(year=1850, month=1, day=1,
+        self.init_utc_time = datetime.datetime(year=2020, month=1, day=1,
                                         hour=0, minute=0, second=0)
 
         #how many days between end of calculations and initialization time
-        self.days_diff = 100000
+        self.days_diff = 5000
         self.end_utc_time = self.init_utc_time + datetime.timedelta(days=self.days_diff)
 
         #Convert dates to strings
@@ -131,7 +131,7 @@ class SolarSystem(FirstKepler):
             = self.solar_system_data_frame['barycentre_pos_scalled'].apply(
             lambda x: np.linalg.norm(x))
     
-    def plot(self,ax2):
+    def plot(self, ax2):
         ax2.plot(self.solar_system_data_frame['UTC'],
                 self.solar_system_data_frame['Barycentre_distance'],
                 color = 'white')
@@ -156,21 +156,70 @@ class PhaseAngel(SolarSystem):
         #(angle between barycentrum, Sun and planet)
 
         for planets_name in NAIF_PLANETS_ID.keys():
-            planet_pos = f"{planets_name} position"
-            planet_angle = f"{planets_name} phase angle"
+            planet_pos = f"{planets_name}_pos"
+            planet_angle = f"{planets_name}_phase_ang"
 
             planet_id = NAIF_PLANETS_ID[planets_name]
 
             self.solar_system_data_frame.loc[:, planet_pos] = \
-            self.solar_system_data_frame['ET'].apply(lambda x:
-                spiceypy.spkgps(targ=planet_id,
-                                et=x,
-                                ref='ECLIPJ2000',
-                                obs=10)[0])
-            self.solar_system_data_frame.loc[:, planet_angle]
+                self.solar_system_data_frame['ET'].apply(lambda x:
+                    spiceypy.spkgps(targ=planet_id,
+                                    et=x,
+                                    ref='ECLIPJ2000',
+                                    obs=10)[0])
+            self.solar_system_data_frame.loc[:, planet_angle] = \
+                self.solar_system_data_frame.apply(lambda x:
+                    np.degrees(spiceypy.vsep(x[planet_pos],
+                                             x['barycentre_pos'])
+                                )
+                                ,axis=1)
+    
+    def plot(self):
+        plt.style.use('dark_background')
+
+        fig, axs = plt.subplots(nrows=len(NAIF_PLANETS_ID.keys()), 
+                               ncols=1,
+                               sharex=True,
+                               figsize=(8,20))
+        
+        for ax, planet_name in zip(list(axs),NAIF_PLANETS_ID.keys()):
+            ax.set_title(planet_name, color='lightseagreen')
+
+            ax.plot(self.solar_system_data_frame['UTC'],
+                self.solar_system_data_frame['Barycentre_distance'],
+                color = 'orange')
             
+            ax.set_ylabel("Bar. distance in Sun Radius", rotation=90,
+                          labelpad=25, fontsize=5)
+
+            ax.set_xlim(min(self.solar_system_data_frame['UTC']), 
+                        max(self.solar_system_data_frame['UTC']))
+            ax.set_ylim(0, 2)
+
+            ax_copy = ax.twinx()
+            ax_copy.plot(self.solar_system_data_frame['UTC'],
+                self.solar_system_data_frame[f'{planet_name}_phase_ang'],
+                color = 'white')
+            
+            ax_copy.invert_yaxis()
+            ax_copy.set_ylim(180, 0)
+
+            ax.set_facecolor('navy')
+            ax_copy.set_facecolor('navy')
+
+            fig.set_facecolor('#1E2A4C')
+
+            ax.grid(True, linewidth=0.5, linestyle='dashed', alpha=0.7)
+
+            plt.subplots_adjust(hspace=15)
+            
+        fig.tight_layout(pad = 5.0)
+        plt.show()
 
         
 if __name__ == "__main__":
     solar_system = SolarSystem()
-    merge_plots(solar_system.trajectory, solar_system.plots)
+    merge_plots(solar_system.trajectory, solar_system.plot)
+    phase_angel = PhaseAngel()
+    phase_angel.plot()
+    #print(phase_angel.solar_system_data_frame)
