@@ -13,6 +13,7 @@ from matplotlib.ticker import FormatStrFormatter
 
 from utilities import kernels_load
 from utilities import merge_plots
+from utilities import NAIF_PLANETS_ID
 
 class FirstKepler:
     def __init__(self):
@@ -130,7 +131,7 @@ class SolarSystem(FirstKepler):
             = self.solar_system_data_frame['barycentre_pos_scalled'].apply(
             lambda x: np.linalg.norm(x))
     
-    def plots(self,ax2):
+    def plot(self,ax2):
         ax2.plot(self.solar_system_data_frame['UTC'],
                 self.solar_system_data_frame['Barycentre_distance'],
                 color = 'white')
@@ -145,6 +146,30 @@ class SolarSystem(FirstKepler):
         ax2.yaxis.set_major_formatter(FormatStrFormatter('%.2f'))
 
         ax2.set_facecolor('navy')
+
+class PhaseAngel(SolarSystem):
+    def __init__(self):
+        super().__init__()
+        #Adding a column of dataframe with position of another
+        #planets further from The Sun than The Earth
+        #Also adding a column with phase angels of planets
+        #(angle between barycentrum, Sun and planet)
+
+        for planets_name in NAIF_PLANETS_ID.keys():
+            planet_pos = f"{planets_name} position"
+            planet_angle = f"{planets_name} phase angle"
+
+            planet_id = NAIF_PLANETS_ID[planets_name]
+
+            self.solar_system_data_frame.loc[:, planet_pos] = \
+            self.solar_system_data_frame['ET'].apply(lambda x:
+                spiceypy.spkgps(targ=planet_id,
+                                et=x,
+                                ref='ECLIPJ2000',
+                                obs=10)[0])
+            self.solar_system_data_frame.loc[:, planet_angle]
+            
+
         
 if __name__ == "__main__":
     solar_system = SolarSystem()
