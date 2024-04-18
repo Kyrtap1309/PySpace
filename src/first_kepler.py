@@ -189,6 +189,8 @@ class PhaseAngel(SolarSystem):
                 self.solar_system_data_frame['Barycentre_distance'],
                 color = 'orange')
             
+
+            
             ax.set_ylabel("Bar. distance in Sun Radius", rotation=90,
                           labelpad=25, fontsize=5)
 
@@ -204,6 +206,10 @@ class PhaseAngel(SolarSystem):
             ax_copy.invert_yaxis()
             ax_copy.set_ylim(180, 0)
 
+            ax_copy.set_ylabel("Phase angel of planet in degrees",
+                               rotation=90, labelpad=25,
+                               fontsize=5)
+
             ax.set_facecolor('navy')
             ax_copy.set_facecolor('navy')
 
@@ -213,6 +219,7 @@ class PhaseAngel(SolarSystem):
 
             plt.subplots_adjust(hspace=15)
             
+        axs[4].set_xlabel('Date')
         fig.tight_layout(pad = 5.0)
         plt.show()
 
