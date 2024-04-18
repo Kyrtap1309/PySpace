@@ -6,6 +6,8 @@ import matplotlib.pyplot as plt
 
 from utilities import kernels_load
 from utilities import NAIF_PLANETS_ID
+from utilities import PLANETS_COLOR
+from utilities import PLANETS_SIZE
 
 class Map:
     def __init__(self):
@@ -16,7 +18,8 @@ class Map:
         kernels_load(self.kernels_path)
 
         #Initialization of UTC time 
-        self.utc_time_str = datetime.datetime.now() \
+        self.utc_time_str = datetime.datetime(year=2001, month=3, day=13,
+                                        hour=0, minute=0, second=0) \
             .strftime('%Y-%m-%dT%H:%M:%S')
         
         #Initialization of ET time 
@@ -54,7 +57,7 @@ class Map:
             # to 90 degrees
 
             
-            self.map_dataframe.loc[:, f"{planets_name}_latitude_plt"] = \
+            self.map_dataframe.loc[:, f"{planets_name}_longtitude_plt"] = \
             self.map_dataframe[f"{planets_name}_longtitude"].apply(
                                     lambda x: -1*((x % np.pi) - np.pi) \
                                         if x > np.pi else -1 * x)
@@ -66,9 +69,24 @@ class Map:
         plt.figure(figsize=(12,8))
 
         plt.subplot(projection="aitoff")
+
+        plt.title(f'{self.utc_time_str}')
+
+        for planet_name in NAIF_PLANETS_ID.keys():
+            plt.plot(self.map_dataframe[f"{planet_name}_longtitude_plt"],
+                     self.map_dataframe[f"{planet_name}_longtitude"],
+                     color = PLANETS_COLOR[planet_name],
+                     marker = 'o',
+                     markersize = PLANETS_SIZE[planet_name],
+                     label =planet_name.capitalize(),
+                     linestyle='None')
+
         
         plt.xlabel("Longtitude")
         plt.ylabel("Latitude")
+
+        plt.legend(loc = 'upper right', bbox_to_anchor=[1.1,1.1],
+                   prop = {'size': 10})
 
         plt.grid(True)
 
