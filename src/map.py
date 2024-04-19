@@ -9,6 +9,9 @@ from utilities import NAIF_PLANETS_ID
 from utilities import PLANETS_COLOR
 from utilities import PLANETS_SIZE
 
+#TODO usprawnic NAIF_PLANETS_ID w utilites jedno i modyfikowane tutaj
+#byc moze za pomoca funkcji w utilities
+
 class Map:
     def __init__(self):
         self.kernels_path = ['./kernels/lsk/naif0012.tls.txt',
@@ -18,13 +21,20 @@ class Map:
         kernels_load(self.kernels_path)
 
         #Initialization of UTC time 
-        self.utc_time_str = datetime.datetime(year=2001, month=3, day=13,
+        self.utc_time_str = datetime.datetime(year=2013, month=3, day=13,
                                         hour=0, minute=0, second=0) \
             .strftime('%Y-%m-%dT%H:%M:%S')
         
         #Initialization of ET time 
         self.et_time = spiceypy.utc2et(self.utc_time_str)
 
+        #Initizalization of planets and ecliptic coordinates
+        #at the map
+        self.map_init()
+        self.ecliptic_init()
+
+       
+    def map_init(self):
         #Creating a pandas dataframe to store calculations and parameters
         self.map_dataframe = pd.DataFrame()
 
@@ -61,7 +71,48 @@ class Map:
             self.map_dataframe[f"{planets_name}_longtitude"].apply(
                                     lambda x: -1*((x % np.pi) - np.pi) \
                                         if x > np.pi else -1 * x)
-            
+    
+    def ecliptic_init(self):
+        #Creating a pandas dataframe to store calculations and parameters
+        self.ecliptic_dataframe = pd.DataFrame()
+
+        #Ecliptic longs and lats coordinates (we will calculate vector of ecliptic plane
+        #for constant latitude)
+        self.ecliptic_dataframe.loc[:, 'Ecliptic_longtitudes'] = np.linspace(0, 
+                                                            2*np.pi, 200) 
+        
+        self.ecliptic_dataframe.loc[:, 'Ecliptic_latitudes'] = np.pi/2.0 
+
+        self.ecliptic_dataframe.loc[:, 'Ecliptic_direction'] = self.ecliptic_dataframe.apply(
+                                                lambda x: spiceypy.sphrec(r=1,
+                                                            colat=x['Ecliptic_latitudes'],
+                                                            lon=x['Ecliptic_longtitudes']),
+                                                axis=1)
+
+        #Transformation from ecliptic to equator coordinates 
+        ecl_to_equ = spiceypy.pxform(fromstr='ECLIPJ2000',
+                                          tostr='J2000',
+                                          et=self.et_time)
+        
+        self.ecliptic_dataframe.loc[:, 'Equator_direction'] = \
+            self.ecliptic_dataframe['Ecliptic_direction'].apply(lambda x: ecl_to_equ.dot(x))
+        
+        self.ecliptic_dataframe.loc[:, 'Equator_long'] = \
+            self.ecliptic_dataframe['Equator_direction'].apply(
+                                    lambda x: spiceypy.recrad(x)[1])
+        
+        self.ecliptic_dataframe.loc[:,'Equator_long_plt'] = \
+            self.ecliptic_dataframe['Equator_long'].apply(
+                                    lambda x: -1*((x % np.pi) - np.pi) \
+                                        if x > np.pi else -1 * x)
+        
+        self.ecliptic_dataframe.loc[:,'Equator_lat'] = \
+            self.ecliptic_dataframe['Equator_direction'].apply(
+                                    lambda x: spiceypy.recrad(x)[2])
+        
+
+
+
     
     def plot_map(self):
         plt.style.use('dark_background')
@@ -81,7 +132,15 @@ class Map:
                      label =planet_name.capitalize(),
                      linestyle='None')
 
-        
+        plt.plot(self.ecliptic_dataframe['Equator_long_plt'],
+                 self.ecliptic_dataframe['Equator_lat'],
+                 linestyle='None',
+                 marker = '_',
+                 markersize=2,
+                 label = 'Ecliptic',
+                 color = 'tab:red')
+                
+
         plt.xlabel("Longtitude")
         plt.ylabel("Latitude")
 

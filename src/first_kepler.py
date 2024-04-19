@@ -13,7 +13,9 @@ from matplotlib.ticker import FormatStrFormatter
 
 from utilities import kernels_load
 from utilities import merge_plots
+from utilities import prepare_dict
 from utilities import NAIF_PLANETS_ID
+
 
 class FirstKepler:
     def __init__(self):
@@ -154,12 +156,16 @@ class PhaseAngel(SolarSystem):
         #planets further from The Sun than The Earth
         #Also adding a column with phase angels of planets
         #(angle between barycentrum, Sun and planet)
+        
+        #Choosing planets to analyze
+        chosen_planets = ['Mars', 'Jupiter', 'Saturn', 'Uran']
+        self.NAIF_PLANETS_ID_updated = prepare_dict(NAIF_PLANETS_ID, chosen_planets)
 
-        for planets_name in NAIF_PLANETS_ID.keys():
+        for planets_name in self.NAIF_PLANETS_ID_updated.keys():
             planet_pos = f"{planets_name}_pos"
             planet_angle = f"{planets_name}_phase_ang"
 
-            planet_id = NAIF_PLANETS_ID[planets_name]
+            planet_id = self.NAIF_PLANETS_ID_updated[planets_name]
 
             self.solar_system_data_frame.loc[:, planet_pos] = \
                 self.solar_system_data_frame['ET'].apply(lambda x:
@@ -177,17 +183,17 @@ class PhaseAngel(SolarSystem):
     def plot(self):
         plt.style.use('dark_background')
 
-        fig, axs = plt.subplots(nrows=len(NAIF_PLANETS_ID.keys()), 
+        fig, axs = plt.subplots(nrows=len(self.NAIF_PLANETS_ID_updated.keys()), 
                                ncols=1,
                                sharex=True,
                                figsize=(8,20))
         
-        for ax, planet_name in zip(list(axs),NAIF_PLANETS_ID.keys()):
-            ax.set_title(planet_name, color='lightseagreen')
+        for ax, planet_name in zip(list(axs), self.NAIF_PLANETS_ID_updated.keys()):
+            ax.set_title(planet_name, color='orange')
 
             ax.plot(self.solar_system_data_frame['UTC'],
                 self.solar_system_data_frame['Barycentre_distance'],
-                color = 'orange')
+                color = 'white')
             
 
             
@@ -201,14 +207,14 @@ class PhaseAngel(SolarSystem):
             ax_copy = ax.twinx()
             ax_copy.plot(self.solar_system_data_frame['UTC'],
                 self.solar_system_data_frame[f'{planet_name}_phase_ang'],
-                color = 'white')
+                color = 'orange')
             
             ax_copy.invert_yaxis()
             ax_copy.set_ylim(180, 0)
 
             ax_copy.set_ylabel("Phase angel of planet in degrees",
                                rotation=90, labelpad=25,
-                               fontsize=5)
+                               fontsize=5, color='orange')
 
             ax.set_facecolor('navy')
             ax_copy.set_facecolor('navy')
@@ -219,7 +225,7 @@ class PhaseAngel(SolarSystem):
 
             plt.subplots_adjust(hspace=15)
             
-        axs[4].set_xlabel('Date')
+        axs[len(self.NAIF_PLANETS_ID_updated.keys()) - 1].set_xlabel('Date')
         fig.tight_layout(pad = 5.0)
         plt.show()
 

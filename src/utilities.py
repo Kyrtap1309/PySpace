@@ -3,6 +3,9 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 NAIF_PLANETS_ID = {
+                    'Sun': 10,
+                    'Venus': 299,
+                    'Moon': 301,
                     'Mars': 4,
                     'Jupiter': 5,
                     'Saturn': 6,
@@ -41,7 +44,7 @@ def kernels_load(kernels_path):
         spiceypy.furnsh(kernel_path)
 
 def merge_plots(plot1, plot2):
-    plt.rcParams.update({'text.color': 'whit e'})
+    plt.rcParams.update({'text.color': 'white'})
     fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(10, 5))
 
     plot1(ax1)  # Pierwsza funkcja na pierwszym subplotcie
@@ -52,6 +55,15 @@ def merge_plots(plot1, plot2):
     fig.set_facecolor('#1E2A4C')
 
     plt.show()  # Wyświetlenie wykresów`
-    
 
+def prepare_dict(planets_dict, chosen_planets):
+    new_planet_dict = dict()
+    for chosen_planet in chosen_planets:
+        new_planet = {chosen_planet: planets_dict[chosen_planet]}
+        new_planet_dict.update(new_planet)
     
+    return new_planet_dict
+
+
+
+
