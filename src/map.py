@@ -9,8 +9,6 @@ from utilities import NAIF_PLANETS_ID
 from utilities import PLANETS_COLOR
 from utilities import PLANETS_SIZE
 
-#TODO usprawnic NAIF_PLANETS_ID w utilites jedno i modyfikowane tutaj
-#byc moze za pomoca funkcji w utilities
 
 class Map:
     def __init__(self):
